@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+
+{% block main %}
+    <link href="/static/login.css" rel="stylesheet">
+    <link href="/static/eye.css" rel="stylesheet">
+    <script src="/static/form.js"></script>
+    <script src="/static/script.js"></script>
+    <link href="/static/styles.css" rel="stylesheet">
+    <style>
+        label[for="input"] {
+            position: absolute;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            color: gold;
+            left: 35px;
+        }
+        .input-label { top: 70px; }
+        .pw-label{ top: 90px; }
+
+        .username:focus ~ .input-label, .password:focus ~ .pw-label {
+            transform: translateY(-100%) scale(0.80);
+            background: black;
+            padding: 0 4px;
+        }
+        .hidden { display: hidden; }
+    </style>
+    <script>
+        const PLACEHOLDERS = ["Username", "Password"];
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input');
+            const len = inputs.length;
+            for (let i = 0; i < len; i++) {
+                const current = inputs[i];
+                current.addEventListener('blur', () => {
+                    if ((current.value).length > 0) {
+                        current.nextElementSibling.classList.add('hidden');
+                        current.setAttribute('placeholder', PLACEHOLDERS[i]);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <div class="d-flex main-content">
+        <form method="post" action="/login">
+            <div class="input-cont">
+                <input name="username" type="text" class="username" autocomplete="off" required>
+                <label for="input" class="input-label">Username</label>
+            </div>
+            <div class="password-container">
+                <button id="eyeButtons" type="button" class="eyeButton1"><span class="eye-container"></span></button>
+                <input name="password" type="password" class="password" required autocomplete="off">
+                <label for="input" class="pw-label">Password</label>
+            </div>
+            <button type="submit" class="login">Login</button>
+        </form>
+    </div>
+{% endblock %}

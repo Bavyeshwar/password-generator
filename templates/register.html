@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block main %}
+    <link rel="stylesheet" href="/static/register.css">
+    <link rel="stylesheet" href="/static/eye.css">
+    <script src="/static/form.js"></script>
+    <script src="/static/script.js"></script>
+    <link href="/static/styles.css" rel="stylesheet">
+    <style>
+        label[for="input"] {
+            position: absolute;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            color: gold;
+            left: 35px;
+        }
+        .input-label { top: 210px; }
+        .pw-label1 { top: 90px; }
+        .pw-label2 { top: 90px; }
+
+        .username:focus ~ .input-label, .password:focus + .pw-label1, .password:focus + .pw-label2 {
+            transform: translateY(-100%) scale(0.80);
+            background: black;
+            padding: 0 4px;
+        }
+        .hidden { display: none; }
+    </style>
+    <script>
+        const PLACEHOLDERS = ["Username", "Password", "Confirm Password"];
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input');
+            const len = inputs.length;
+            for (let i = 0; i < len; i++) {
+                const current = inputs[i];
+                current.addEventListener('blur', () => {
+                    console.log('yay');
+                    if ((current.value).length > 0) {
+                        current.nextElementSibling.classList.add('hidden');
+                        current.setAttribute('placeholder', PLACEHOLDERS[i]);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <div class="main-content d-flex">
+        <form method="post" action="/register">
+            <div class="input-container">
+                <input name="username" type="text" class="username" required autocomplete="off" autofocus>
+                <label for="input" class="input-label">Username</label>
+            </div>
+            <div class="password-container">
+                <button id="eyeButtons" type="button" class="eyeButton1">
+                    <span class="eye-container"></span>
+                </button>
+                <input name="password" type="password" class="password" required autocomplete="off">
+                <label for="input" class="pw-label1">Password</label>
+            </div>
+            <div class="password-container">
+                <button id="eyeButtons" class="eyeButton2" type="button">
+                    <span class="eye-container"></span>
+                </button>
+                <input name="confirmation" type="password" class="password" required autocomplete="off">
+                <label for="input" class="pw-label2">Confirm Password</label>
+            </div>
+
+            <button type="submit" required class="register">Register</button>
+        </form>
+        <svg viewBox="0 0 1920 1080" class="arrows">
+            <g class="arrow2">
+                <path class="path2" d="M 700 650 Q 50 700 420 400 Q 520 500 270 600 T 200 210"></path>
+                <polygon class="arrow-head2" points="700 700, 800 650, 700 600"></polygon>
+            </g>
+            <g class="arrow1">
+                <polygon class="arrow-head" points="700 700, 800 650, 700 600"></polygon>
+                <path class="path1" d="M 700 650 Q 50 700 420 400 Q 520 500 270 600 T 200 210"></path>
+            </g>
+        </svg>
+    </div>
+{% endblock %}

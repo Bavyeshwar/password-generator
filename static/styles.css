@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    height: 10vh;
+    width: 20vw;
+    border-radius: 34px;
+    text-indent: 30px;
+}
+
+.username {
+    margin-top: 50px;
+}
+
+.password {
+    margin-top: 70px;
+}
+
+input::placeholder {
+    font-size: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+body {
+    background-size: 400% 400%;
+}
+
+nav {
+    box-shadow: 6px 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.my-nav-link:hover {
+    text-decoration: underline !important;
+}
+
+nav {
+    min-height: 9vh;
+    min-width: 100vw;
+}
+
+.my-nav-link {
+    font-size: 1.4rem !important;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    margin: none;
+    padding: none;
+}
+
+main {
+    scrollbar-width: none;
+    height: 100%;
+    width: 100%;
+}
+
+body::~webkit~scrollbar {
+    display: none;
+}
+
+.hidden {
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
+#homeIcon {
+    position: relative;
+}
+
+.my-site-name {
+    position: absolute;
+    left: 7vw;
+    font-size: 1.5rem !important;
+    font-family: "Chalkduster", "Luminari", fantasy;
+}
+
+#homeButton {
+    position: absolute;
+    pointer-events: all;
+    user-select: none;
+    height: 10vh;
+    width: 5vw;
+    border: none;
+    background: none;
+    top: 0
+}
+
+#homeButton:hover {
+    cursor: pointer;
+}
+
+.icon {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    pointer-events: none;
+    height: 50%;
+    width: 50%;
+}
+
+.myNavbar {
+    display: flex;
+    gap: 0;
+    position: absolute;
+    right: 30px;
+}
+.link4 {
+    color: gold !important;
+}
+
+div, a, label {
+    user-select: none;
+}

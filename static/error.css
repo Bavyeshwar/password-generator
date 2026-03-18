@@ -1,0 +1,20 @@
+.error {
+    font-size: 40px;
+    font-family: "Luminari", "Trattatello", fantasy;
+    font-weight: 550;
+}
+
+body {
+    background: black;
+}
+
+p {
+    color: white;
+    text-shadow: 3.5px 3.5px gray;
+}
+
+.oops {
+    font-size: 70px;
+    font-family: "Marker Felt", "Chalkduster", fantasy;
+    font-weight: 900;
+}

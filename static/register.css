@@ -1,0 +1,97 @@
+input {
+    background-color: #000000;
+    border: 2px solid #000000;
+    color: green;
+    height: 10vh;
+    width: 20vw;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+    font-size: 20px;
+    user-select: none;
+}
+
+.register {
+    margin-top: 10vh;
+    height: 10vh;
+    width: 20vw;
+    background-color: #000000;
+    color: gold;
+    border: 2px solid #000000;
+    font-size: 30px;
+    border-radius: 34px;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+    text-shadow: 3px 3px #FFFFC5;
+    user-select: none;
+}
+
+.register:hover {
+    border-color: gold;
+    box-shadow: 8px 8px 0px gold;
+    text-shadow: 5px 5px black;
+}
+
+input:focus {
+    caret-color: white;
+    color: white;
+    border-color: white;
+}
+
+input:focus::placeholder {
+    color: white;
+}
+
+input::placeholder {
+    font-style: italic;
+    font-size: 20px;
+    color: green;
+}
+
+form {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 40vw;
+    z-index: 1;
+}
+
+body {
+    background-size: 400% 400%;
+    background-color: #222222;
+}
+
+.arrow-head {
+    fill: gold;
+}
+
+.path1, .path2 {
+    stroke-width: 4px;
+    fill: none;
+}
+
+.path1 {
+    stroke: gold;
+}
+
+.path2 {
+    stroke: white;
+    stroke-opacity: 0.5;
+    stroke-dasharray: 15px;
+}
+
+.arrow2 {
+    transform: translate(50px, 40px);
+}
+
+.arrow-head2 {
+    fill: white;
+    opacity: 0.5;
+}
+
+.arrows {
+    position: fixed;
+    margin-right: 50vw !important;
+    width: 60%;
+    height: 60%;
+    left: 12vw;
+    top: 43vh;
+    z-index: 0;
+}

@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block main %}
+    <script>
+        const total = 300;
+        const imgs = [
+            "greenTree1.svg",
+            "greenTree2.svg",
+            "greenTree3.svg"
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const cont = document.querySelector("#container");
+
+            for (let i = 0; i < total; i++) {
+                const img = document.createElement('img');
+                img.src = `static/images/${imgs[Math.floor(Math.random() * imgs.length)]}`;
+                img.classList.add("img");
+                const width = Math.random() * 150 + 50;
+                img.style.width = `${width}px`;
+                img.style.opacity = Math.random().toFixed(2);
+                img.style.marginLeft = `${-width * 0.3}px`;
+                img.style.transform = `translateY(${Math.random() * 20}px)`;
+
+                cont.appendChild(img);
+            }
+        });
+    </script>
+    <style>
+        main {
+            background-color: white;
+            height: 50vh; width: 100vw;
+            overflow-y: hidden;
+        }
+        #error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            font-size: 50px;
+            color: black;
+            text-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4);
+            background-color: red;
+            border-radius: 50px;
+            height: 200px;
+            width: 700px;
+            top: 200px;
+            left: 530px;
+        }
+        #error:hover { box-shadow: 8px 8px 16px black; }
+
+        #container {
+            position: absolute;
+            height: 50vh;
+            width: 100vw;
+            top: 500px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-end;
+            bottom: 0; left: 0;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+        .img { display: block; }
+    </style>
+    <div id="error">Error {{ error.code | default("") }}: {{ error.name | default("") }} - {{ error.message | default("") }}</div>
+    <div id="container"></div>
+{% endblock %}

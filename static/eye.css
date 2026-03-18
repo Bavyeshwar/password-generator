@@ -1,0 +1,46 @@
+.password-container {
+    top: 2%;
+    position: relative;
+}
+
+#eyeButtons {
+    user-select: none;
+    pointer-events: all;
+    background: none;
+    padding: none;
+    margin: none;
+    height: 7vh;
+    width: 5vw;
+    border: none;
+    border-radius: 80px;
+    z-index: 2;
+    position: absolute;
+    right: 0.3vw;
+}
+
+.eyeButton1 {
+    top: 50%;
+    transform: translateY(10%);
+}
+
+.eyeButton2 {
+    top: 50%;
+    transform: translateY(10%);
+}
+
+#eyeButtons:hover  {
+    cursor: pointer;
+}
+
+.eye-svg {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    pointer-events: none;
+    user-select: none;
+    height: 50%;
+    width: 50%;
+}
+
+.eye-container {
+    pointer-events: none;
+    user-select: none
+}

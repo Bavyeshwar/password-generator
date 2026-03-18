@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block main %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <link href="/static/index.css" rel="stylesheet">
+    <script>
+        const total = 50;
+        const colors = ["#DAA425", "#f2ca46", "gold", "yellow", "#c49d29"];
+        function randSign(integer) {
+                if (Math.floor(Math.random() * 2) === 1) { return -1 * integer; }
+                return integer;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const third = document.querySelector(".third");
+            third.addEventListener("click", (event) => {
+                const rect = third.getBoundingClientRect();
+                const clickX = event.clientX - rect.left;
+                const clickY = event.clientY - rect.top;
+
+                const pieces = [];
+                for (let i = 0; i < total; i++) {
+                    const confetti = document.createElement("div");
+                    confetti.classList.add("confetti");
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.top = `${clickY - 4}px`;
+                    confetti.style.left = `${clickX - 4}px`;
+                    pieces.push(confetti);
+                    third.appendChild(confetti);
+                }
+
+                pieces.forEach((piece) => {
+                    const randX = randSign(Math.floor(Math.random() * 255));
+                    const randY = randSign(Math.floor(Math.random() * 255));
+                    const randRot = randSign(Math.floor(Math.random() * 355));
+                    const x = randSign(Math.floor(Math.random() * 1000));
+                    const y = randSign(Math.floor(Math.random() * 1000));
+                    const rot = randSign(Math.floor(Math.random() * 360));
+
+                    gsap.to(piece, {
+                        opacity: 0,
+                        x: x,
+                        y: y,
+                        rotation: rot,
+                        ease: "power2.out",
+                        duration: 1
+                    });
+                });
+                setTimeout(function() {
+                    pieces.forEach((piece) => { piece.remove(); });
+                }, 1500);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollToPlugin);
+            const main = document.querySelector('main');
+            const tl = gsap.timeline({defaults: {ease: "power1.inOut", duration: 2}});
+
+            tl.to(main, { scrollTo: {x: window.innerWidth} });
+            tl.to(main, { scrollTo: {y: window.innerHeight} });
+            tl.to(main, { scrollTo: {x: 0} });
+        });
+    </script>
+
+    <div class="first slide"></div>
+    <div class="second slide"></div>
+    <div class="third slide">
+        <div class="txt">
+            <h3>Welcome To CyberSecurity!</h3>
+            <p>
+                blah blah blah
+                PS Click anywhere on the screen!
+            </p>
+        </div>
+    </div>
+    <div class="fourth slide"></div>
+{% endblock %}

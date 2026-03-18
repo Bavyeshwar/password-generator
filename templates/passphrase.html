@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+{% block main %}
+    <link href="/static/styles.css" rel="stylesheet">
+    <script src="/static/script.js"></script>
+
+    <script>
+        async function get(phrase) {
+            const data = await fetch("/passphrase-generator", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'phrase': phrase })
+            });
+
+            if (data.ok === false) { console.log("App error."); }
+            response = await data.json();
+            if (response["pw"] === -1) { console.log("App error."); }
+            return response["pw"];
+        }
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            document.querySelector("#generate").addEventListener("click", async function() {
+                console.log("yay");
+                let input = document.querySelector("#phrase");
+                const result = document.querySelector("#result");
+                if (input.value.replaceAll(" ", "") === "") {
+                    result.textContent = "Invalid Input.";
+                } else {
+                    input = input.value;
+                    result.textContent = await get(input);
+
+                    const btn = document.querySelector("#copy");
+                    btn.addEventListener("click", () => {
+                        btn.textContent = "Copied!";
+                        navigator.clipboard.writeText(result.textContent);
+                    });
+                }
+            });
+        });
+    </script>
+    <style>
+        main {
+            background-color: #151515;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        #phrase {
+            margin-top: 70px;
+            height: 100px;
+            width: 500px;
+            border: 3px solid #57B9FF;
+            background-color: #151515;
+            border-radius: 30px;
+            outline: none;
+            padding-right: 50px;
+            margin-left: 30px;
+            font-size: 20px;
+            color: white;
+        }
+        #phrase:focus {
+            background-color: none;
+            border: 2px solid gold;
+            box-shadow: 8px 8px 10px gold;
+            color: white;
+            outline: none;
+        }
+        #generate {
+            height: 150px;
+            width: 300px;
+            color: white;
+            border: 2px solid white;
+            font-size: 30px;
+            filter: blur(10px);
+            transition: filter 0.5s ease;
+            margin-left: 20px;
+        }
+        #generate:hover {
+            filter: blur(0);
+            box-shadow: 8px 8px 16px #57B9FF;
+            background-color: #57B9FF;
+            color: black;
+            border: none;
+            border-radius: 40px;
+        }
+        .form {
+            height: 800px;
+            width: 700px;
+            border: 2px solid white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            position: absolute;
+            top: 150px;
+            border-radius: 40px;
+        }
+
+        label[for="phrase"] {
+            position: absolute;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            color: gold;
+            background-color: #151515;
+            height: 30px;
+            width: 105px;
+            top: 60px;
+            left: 130px;
+            opacity: 0;
+        }
+        #phrase:focus ~ label[for="phrase"] {
+            transform: translateY(-5%) translateX(-5%);
+            opacity: 1;
+            padding: 0 4px;
+        }
+        #phrase:focus::placeholder, #phrase:not(:placeholder-shown)::placeholder { color: transparent; }
+
+        #result {
+            position: absolute;
+            top: 530px;
+            border: none;
+            outline: none;
+            margin-left: 20px;
+            height: 100px;
+            width: 400px;
+            background-image: linear-gradient(45deg, red, orange, green, blue);
+            border-radius: 50px;
+            font-size: 40px;
+        }
+
+        #copy {
+            color: white;
+            background-color: #008080;
+            border-radius: 40px;
+            outline: none;
+            font-size: 20px;
+            height: 100px;
+            width: 200px;
+            position: absolute;
+            bottom: 300px;
+            border: none
+        }
+        #copy:hover {
+            border: 4px solid #008080;
+            background-color: #151515;
+        }
+    </style>
+    <div class="form">
+        <input type="text" placeholder="Passphrase" autocomplete="off" autofocus required name="passphrase" id="phrase">
+        <label for="phrase">Passphrase</label>
+        <button type="button" id="generate">Generate</button>
+        <button type="button" id="copy">Copy</button>
+        <button type="button" id="result"></button>
+    </div>
+{% endblock %}

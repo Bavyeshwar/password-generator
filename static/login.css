@@ -1,0 +1,55 @@
+body {
+    background: linear-gradient(to right, #BF0A30, #8D021F);
+}
+
+form {
+    position: fixed;
+    top: 15%;
+    display: flex;
+    justify-content: center;
+    right: 40vw;
+}
+
+input {
+    background-color: #000000;
+    color: white;
+    border: none;
+    font-size: 25px;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.7)
+}
+
+input:focus {
+    color: gold;
+    border: 4px solid gold;
+    box-shadow: 8px 8px 16px #420D09;
+}
+
+input::placeholder {
+    color: white;
+}
+
+input:focus::placeholder {
+    color: gold;
+}
+
+.login {
+    background-color: #000000;
+    color: white;
+    border: none;
+    font-size: 30px;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 34px;
+    height: 10vh;
+    width: 20vw;
+    margin-top: 10vh;
+    text-shadow: 5px 5px #D3D3D3;
+}
+
+.login:hover {
+    box-shadow: 8px 8px 16px gold;
+    color: black;
+    background-color: gold;
+    border: 4px solid gold;
+    text-shadow: 5px 5px #333333;
+    font-weight: bold;
+}
