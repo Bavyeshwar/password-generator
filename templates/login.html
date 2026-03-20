@@ -16,45 +16,72 @@
             color: gold;
             left: 35px;
         }
-        .input-label { top: 70px; }
-        .pw-label{ top: 90px; }
 
-        .username:focus ~ .input-label, .password:focus ~ .pw-label {
+        #email:focus + .input-label, #password:focus + .pw-label {
             transform: translateY(-100%) scale(0.80);
             background: black;
-            padding: 0 4px;
         }
-        .hidden { display: hidden; }
+
+        .input-container, .password-container { position: relative; }
     </style>
-    <script>
-        const PLACEHOLDERS = ["Username", "Password"];
-        document.addEventListener('DOMContentLoaded', () => {
-            const inputs = document.querySelectorAll('input');
-            const len = inputs.length;
-            for (let i = 0; i < len; i++) {
-                const current = inputs[i];
-                current.addEventListener('blur', () => {
-                    if ((current.value).length > 0) {
-                        current.nextElementSibling.classList.add('hidden');
-                        current.setAttribute('placeholder', PLACEHOLDERS[i]);
-                    }
-                });
-            }
-        });
-    </script>
 
     <div class="d-flex main-content">
         <form method="post" action="/login">
-            <div class="input-cont">
-                <input name="username" type="text" class="username" autocomplete="off" required>
-                <label for="input" class="input-label">Username</label>
+            <div class="input-container">
+                <input name="email" type="text" id="email" autocomplete="off" placeholder=" " required>
+                <label for="input" class="email-label">Email</label>
             </div>
             <div class="password-container">
-                <button id="eyeButtons" type="button" class="eyeButton1"><span class="eye-container"></span></button>
-                <input name="password" type="password" class="password" required autocomplete="off">
+                <button type="button" id="eyeButton1"><span class="eye-container eyeButtons"></span></button>
+                <input name="password" type="password" id="password" required autocomplete="off" placeholder=" ">
                 <label for="input" class="pw-label">Password</label>
             </div>
-            <button type="submit" class="login">Login</button>
+            <button type="submit" id="loginButton">Login</button>
         </form>
+        <div id="error-container" class="alert alert-danger d-none" role="alert">
+            <span id="error-msg"></span>
+        </div>
+        <script type="module">
+            import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+            const firebaseConfig = {
+                apiKey: "AIzaSyCUnrHCSR--zlWKLVGyzHSrO3anjSnpuww",
+                authDomain: "pw-generator-site.firebaseapp.com",
+                projectId: "pw-generator-site",
+                storageBucket: "pw-generator-site.firebasestorage.app",
+                messagingSenderId: "784808416311",
+                appId: "1:784808416311:web:04fa57018d6ecc24b75bb2"
+            };
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+
+            document.getElementById('loginButton').addEventListener('click', async (event) => {
+                event.preventDefault();
+
+                try {
+                    const email = document.querySelector('#email');
+                    const pw = document.querySelector('#password');
+
+                    const credentials = await signInWithEmailAndPassword(auth, email, pw);
+                    const user = credentials.user;
+
+                    const token = await user.getIdToken();
+                    
+                    const response = await fetch('/create-session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token: token })
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/';
+                    }
+                } catch(error) {
+                    document.getElementById("error-msg").content = error.message;
+                    document.getElementById("error-container").classList.remove('d-none');
+
+                    console.log(`Login failed: [ code: ${error.code}, message: ${error.message} ]`);
+                }
+            });
+        </script>
     </div>
 {% endblock %}

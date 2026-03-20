@@ -3,7 +3,7 @@
     position: relative;
 }
 
-#eyeButtons {
+.eyeButtons {
     user-select: none;
     pointer-events: all;
     background: none;
@@ -18,17 +18,17 @@
     right: 0.3vw;
 }
 
-.eyeButton1 {
+#eyeButton1 {
     top: 50%;
     transform: translateY(10%);
 }
 
-.eyeButton2 {
+#eyeButton2 {
     top: 50%;
     transform: translateY(10%);
 }
 
-#eyeButtons:hover  {
+.eyeButtons:hover  {
     cursor: pointer;
 }
 
@@ -44,3 +44,4 @@
     pointer-events: none;
     user-select: none
 }
+

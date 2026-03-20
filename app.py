@@ -3,13 +3,9 @@ from flask_session import Session
 from functools import wraps
 import requests
 
-import hashlib
-import string
-import math
+import hashlib, string, math, passGen
 
 import os
-
-import passGen
 
 app = Flask(__name__)
 
@@ -93,8 +89,9 @@ def index():
 
 # Not Found
 @app.errorhandler(HTTPException)
-def not_found(e):
-    return render_template("404.html", error={"code": e.code, "name": e.name}), 404
+def error(e):
+    code = e.code
+    return render_template("error.html", error={"code": code, "name": e.name}), code
 
 @app.route("/tmp")
 def tmp():
@@ -106,11 +103,16 @@ def logout():
     session.clear()
     return redirect("/")
 
-# Login
-
-
-# Register
-
+@app.route("/create-session", methods=["POST"])
+def create_session():
+    token = request.json.get('token')
+    try:
+        verified = auth.verify(token)
+        session["user_id"] = verified["uid"]
+        session["email"] = verified["email"]
+        return {"successful": True}, 200
+    except Exception:
+        return {"successful": False}, 401
 
 # Password Generator
 @login_required
@@ -157,3 +159,6 @@ def passphrase():
         return jsonify({"pw": passGen.transform(data["phrase"])})
     else:
         return render_template("passphrase.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)

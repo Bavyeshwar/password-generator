@@ -9,6 +9,9 @@
     <script src="/static/script.js"></script>
     <link href="/static/styles.css" rel="stylesheet">
     <style>
+        .email-container, .password-container {
+            position: relative;
+        }
         label[for="input"] {
             position: absolute;
             font-size: 20px;
@@ -17,58 +20,92 @@
             color: gold;
             left: 35px;
         }
-        .input-label { top: 210px; }
-        .pw-label1 { top: 90px; }
-        .pw-label2 { top: 90px; }
 
-        .username:focus ~ .input-label, .password:focus + .pw-label1, .password:focus + .pw-label2 {
+        .email:focus + .input-label, .password:focus + .pw-label1, .password:focus + .pw-label2 {
             transform: translateY(-100%) scale(0.80);
             background: black;
-            padding: 0 4px;
         }
-        .hidden { display: none; }
     </style>
-    <script>
-        const PLACEHOLDERS = ["Username", "Password", "Confirm Password"];
-        document.addEventListener('DOMContentLoaded', () => {
-            const inputs = document.querySelectorAll('input');
-            const len = inputs.length;
-            for (let i = 0; i < len; i++) {
-                const current = inputs[i];
-                current.addEventListener('blur', () => {
-                    console.log('yay');
-                    if ((current.value).length > 0) {
-                        current.nextElementSibling.classList.add('hidden');
-                        current.setAttribute('placeholder', PLACEHOLDERS[i]);
-                    }
-                });
-            }
-        });
-    </script>
 
     <div class="main-content d-flex">
         <form method="post" action="/register">
-            <div class="input-container">
-                <input name="username" type="text" class="username" required autocomplete="off" autofocus>
-                <label for="input" class="input-label">Username</label>
+            <div class="email-container">
+                <input name="email" type="text" class="email" required autocomplete="off" autofocus placeholder=" " id="email">
+                <label for="input" class="input-label">Email</label>
             </div>
             <div class="password-container">
-                <button id="eyeButtons" type="button" class="eyeButton1">
+                <button class="eyeButtons" type="button" id="eyeButton1">
                     <span class="eye-container"></span>
                 </button>
-                <input name="password" type="password" class="password" required autocomplete="off">
+                <input name="password" type="password" class="password" required autocomplete="off" placeholder=" " id="password">
                 <label for="input" class="pw-label1">Password</label>
             </div>
             <div class="password-container">
-                <button id="eyeButtons" class="eyeButton2" type="button">
+                <button class="eyeButtons" id="eyeButton2" type="button">
                     <span class="eye-container"></span>
                 </button>
-                <input name="confirmation" type="password" class="password" required autocomplete="off">
+                <input name="confirmation" type="password" class="password" required autocomplete="off" placeholder=" " id="passwordConfirmation">
                 <label for="input" class="pw-label2">Confirm Password</label>
             </div>
 
-            <button type="submit" required class="register">Register</button>
+            <button type="submit" required class="register" id="registerButton">Register</button>
         </form>
+        <div id="error-container" class="alert alert-danger d-none" role="alert">
+            <span id="error-msg"></span>
+        </div>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+            import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+            const firebaseConfig = {
+                apiKey: "AIzaSyCUnrHCSR--zlWKLVGyzHSrO3anjSnpuww",
+                authDomain: "pw-generator-site.firebaseapp.com",
+                projectId: "pw-generator-site",
+                storageBucket: "pw-generator-site.firebasestorage.app",
+                messagingSenderId: "784808416311",
+                appId: "1:784808416311:web:04fa57018d6ecc24b75bb2"
+            };
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+
+            document.querySelector("#registerButton").addEventListener("click", async (event) => {
+                event.preventDefault();
+
+                const email = document.getElementById("email");
+                const pw = document.querySelector("#password");
+                const confirmed = document.getElementById("#passwordConfirmation");
+
+                const errorDiv = document.querySelector("#error-msg");
+                const errorContainer = document.getElementById("error-container");
+
+                if (pw.value != confirmed.value) {
+                    errorDiv.content = "Password and Confirmation don't match";
+                    errorContainer.classList.remove("d-none");
+                }
+
+                try {
+                    const credentials = await signInWithEmailAndPassword(auth, email, pw);
+                    const user = credentials.user;
+
+                    const token = await user.getIdToken();
+                    
+                    const response = await fetch('/create-session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token: token })
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/';
+                    }
+
+                } catch(error) {
+                    document.getElementById("error-msg").content = error.message;
+                    document.getElementById("error-container").classList.remove('d-none');
+
+                    console.log(`Registration failed: [ code: ${error.code}, message: ${error.message} ]`);
+                }
+            });
+        </script>
         <svg viewBox="0 0 1920 1080" class="arrows">
             <g class="arrow2">
                 <path class="path2" d="M 700 650 Q 50 700 420 400 Q 520 500 270 600 T 200 210"></path>

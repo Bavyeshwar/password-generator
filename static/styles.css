@@ -10,11 +10,11 @@ input {
     text-indent: 30px;
 }
 
-.username {
+#email {
     margin-top: 50px;
 }
 
-.password {
+#password {
     margin-top: 70px;
 }
 

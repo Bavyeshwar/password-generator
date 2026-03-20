@@ -45,8 +45,24 @@
                             <li class="nav-item"><a class="nav-link my-nav-link link4" href="/passphrase-generator">Passphrase Password Generator</a></li>
                         </ul>
                         <ul class="navbar-nav me-auto mt-2 link3">
-                            <li class="nav-item"><a class="nav-link text-white my-nav-link" href="/logout">Logout</a></li>
+                            <li class="nav-item"><a class="nav-link text-white my-nav-link" href="/logout" id="logoutLink">Logout</a></li>
                         </ul>
+                        <script type="module">
+                            import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+                            const auth = getAuth();
+                            const link = document.getElementById("logoutLink");
+
+                            link.addEventListener("click", () => {
+                                event.preventDefault();
+
+                                signOut(auth).then(() => {
+                                    window.location.href = "/logout";
+                                }).catch((error) => {
+                                    console.log(`Error logging out: ${error}`);
+                                });
+                            });
+                        </script>
                     {% else %}
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link text-white my-nav-link" href="/register">Register</a></li>
