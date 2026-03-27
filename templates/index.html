@@ -12,7 +12,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            const third = document.querySelector(".third");
+            const third = document.querySelector("#third");
             third.addEventListener("click", (event) => {
                 const rect = third.getBoundingClientRect();
                 const clickX = event.clientX - rect.left;
@@ -57,15 +57,17 @@
             const main = document.querySelector('main');
             const tl = gsap.timeline({defaults: {ease: "power1.inOut", duration: 2}});
 
-            tl.to(main, { scrollTo: {x: window.innerWidth} });
-            tl.to(main, { scrollTo: {y: window.innerHeight} });
-            tl.to(main, { scrollTo: {x: 0} });
+            gsap.to(main, { duration: 0, scrollTo: "#first" });
+
+            tl.to(main, { scrollTo: "#second" });
+            tl.to(main, { scrollTo: "#fourth" });
+            tl.to(main, { scrollTo: "#third" });
         });
     </script>
 
-    <div class="first slide"></div>
-    <div class="second slide"></div>
-    <div class="third slide">
+    <div class="slide" id="first"></div>
+    <div class="slide" id="second"></div>
+    <div class="slide" id="third">
         <div class="txt">
             <h3>Welcome To CyberSecurity!</h3>
             <p>
@@ -74,5 +76,5 @@
             </p>
         </div>
     </div>
-    <div class="fourth slide"></div>
+    <div class="slide" id="fourth"></div>
 {% endblock %}

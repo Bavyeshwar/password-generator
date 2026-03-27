@@ -1,35 +1,15 @@
 {% extends "layout.html" %}
 {% block main %}
-    <script>
-        const total = 300;
-        const imgs = [
-            "greenTree1.svg",
-            "greenTree2.svg",
-            "greenTree3.svg"
-        ];
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const cont = document.querySelector("#container");
-
-            for (let i = 0; i < total; i++) {
-                const img = document.createElement('img');
-                img.src = `static/images/${imgs[Math.floor(Math.random() * imgs.length)]}`;
-                img.classList.add("img");
-                const width = Math.random() * 150 + 50;
-                img.style.width = `${width}px`;
-                img.style.opacity = Math.random().toFixed(2);
-                img.style.marginLeft = `${-width * 0.3}px`;
-                img.style.transform = `translateY(${Math.random() * 20}px)`;
-
-                cont.appendChild(img);
-            }
-        });
-    </script>
     <style>
+        body {
+            overflow: hidden;
+        }
         main {
-            background-color: white;
-            height: 50vh; width: 100vw;
-            overflow-y: hidden;
+            height: 100vh; width: 100vw;
+            background-image: url('/static/images/forest.jpg');
+            background-size: cover;      /* Scales the image to fill the screen */
+            background-position: center; /* Keeps the middle of the forest in view */
+            background-repeat: no-repeat;
         }
         #error {
             display: flex;
@@ -41,28 +21,12 @@
             text-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4);
             background-color: red;
             border-radius: 50px;
-            height: 200px;
-            width: 700px;
-            top: 200px;
-            left: 530px;
+            height: 30vh;
+            width: 50vw;
+            top: 30vh;
+            left: 25vw;
         }
         #error:hover { box-shadow: 8px 8px 16px black; }
-
-        #container {
-            position: absolute;
-            height: 50vh;
-            width: 100vw;
-            top: 500px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-end;
-            bottom: 0; left: 0;
-            overflow: hidden;
-            vertical-align: bottom;
-        }
-        .img { display: block; }
     </style>
     <div id="error">Error {{ error.code | default("") }}: {{ error.name | default("") }} - {{ error.message | default("") }}</div>
-    <div id="container"></div>
 {% endblock %}

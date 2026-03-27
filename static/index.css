@@ -1,6 +1,9 @@
 html, body {
     height: 100%;
 }
+body {
+    overflow: hidden;
+}
 * {
     margin: 0;
     padding: 0;
@@ -24,20 +27,16 @@ main {
     align-items: center;
     flex-direction: column;
 }
-.first {
+#first {
     background-color: red;
 }
-.second {
+#second {
     background-color: gold;
 }
-.third {
+#third {
     background-color: #2f2f2f;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
 }
-.fourth {
+#fourth {
     background-color: green;
 }
 

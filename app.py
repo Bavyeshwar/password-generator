@@ -2,12 +2,20 @@ from flask import Flask, redirect, render_template, request, session, jsonify
 from flask_session import Session
 from functools import wraps
 import requests
+from werkzeug.exceptions import HTTPException
 
 import hashlib, string, math, passGen
 
 import os
 
+import firebase_admin
+from firebase_admin import credentials, auth
+
+
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(credentials.Certificate("service-key.json"))
 app = Flask(__name__)
+app.secret_key = "random_string"
 
 # Declare session norms.
 app.config["SESSION_PERMANENT"] = False
@@ -93,25 +101,30 @@ def error(e):
     code = e.code
     return render_template("error.html", error={"code": code, "name": e.name}), code
 
-@app.route("/tmp")
-def tmp():
-    return render_template("tmp.html")
-
 # Logout
-@app.route("/logout")
+@app.route("/logout", methods=["GET"])
 def logout():
     session.clear()
     return redirect("/")
+
+@app.route('/login', methods=["GET"])
+def login():
+    return render_template("login.html")
+
+@app.route('/register', methods=["GET"])
+def register():
+    return render_template("register.html")
 
 @app.route("/create-session", methods=["POST"])
 def create_session():
     token = request.json.get('token')
     try:
-        verified = auth.verify(token)
+        verified = auth.verify_id_token(token)
         session["user_id"] = verified["uid"]
         session["email"] = verified["email"]
         return {"successful": True}, 200
-    except Exception:
+    except Exception as e:
+        print(e)
         return {"successful": False}, 401
 
 # Password Generator

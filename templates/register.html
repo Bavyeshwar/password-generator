@@ -12,7 +12,7 @@
         .email-container, .password-container {
             position: relative;
         }
-        label[for="input"] {
+        .input-label {
             position: absolute;
             font-size: 20px;
             user-select: none;
@@ -20,11 +20,50 @@
             color: gold;
             left: 35px;
         }
+        #password + .input-label {
+            top: 95px;
+        }
+        #email + .input-label {
+            top: 75px;
+        }
+        #passwordConfirmation + .input-label {
+            top: 25px;
+            transform-origin: top left;
+        }
 
-        .email:focus + .input-label, .password:focus + .pw-label1, .password:focus + .pw-label2 {
+        input:focus + label[for="input"], input:not(:placeholder-shown) + label[for="input"] {
             transform: translateY(-100%) scale(0.80);
             background: black;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 70vh;
+            top: 15vh;
+            bottom: 15vh;
+        }
+        .eyeButtons {
+            position: absolute;
+            left: 250px;
+        }
+        #eyeButton2 {
+            top: 15px;
+        }
+        #eyeButton1 {
+            top: 80px;
+        }
+
+        #error-container {
+            height: 7vh;
+            width: 30vw;
+            vertical-align: bottom;
+            color: black;
+            top: 80vh;
+            left: 35vw;
+        }
+        #error-msg { color: black; }
     </style>
 
     <div class="main-content d-flex">
@@ -38,14 +77,14 @@
                     <span class="eye-container"></span>
                 </button>
                 <input name="password" type="password" class="password" required autocomplete="off" placeholder=" " id="password">
-                <label for="input" class="pw-label1">Password</label>
+                <label for="input" class="input-label">Password</label>
             </div>
             <div class="password-container">
                 <button class="eyeButtons" id="eyeButton2" type="button">
                     <span class="eye-container"></span>
                 </button>
                 <input name="confirmation" type="password" class="password" required autocomplete="off" placeholder=" " id="passwordConfirmation">
-                <label for="input" class="pw-label2">Confirm Password</label>
+                <label for="input" class="input-label">Confirm Password</label>
             </div>
 
             <button type="submit" required class="register" id="registerButton">Register</button>
@@ -70,23 +109,22 @@
             document.querySelector("#registerButton").addEventListener("click", async (event) => {
                 event.preventDefault();
 
-                const email = document.getElementById("email");
-                const pw = document.querySelector("#password");
-                const confirmed = document.getElementById("#passwordConfirmation");
+                const email = document.getElementById("email").value;
+                const pw = document.querySelector("#password").value;
+                const confirmed = document.getElementById("passwordConfirmation").value;
 
                 const errorDiv = document.querySelector("#error-msg");
                 const errorContainer = document.getElementById("error-container");
 
-                if (pw.value != confirmed.value) {
+                if (pw != confirmed) {
                     errorDiv.content = "Password and Confirmation don't match";
                     errorContainer.classList.remove("d-none");
                 }
 
                 try {
-                    const credentials = await signInWithEmailAndPassword(auth, email, pw);
-                    const user = credentials.user;
+                    const credentials = await createUserWithEmailAndPassword(auth, email, pw);
 
-                    const token = await user.getIdToken();
+                    const token = await credentials.user.getIdToken();
                     
                     const response = await fetch('/create-session', {
                         method: 'POST',
@@ -99,10 +137,27 @@
                     }
 
                 } catch(error) {
-                    document.getElementById("error-msg").content = error.message;
+                    let userMessage = "Something went wrong. Please try again.";
+                    const substitutes = {
+                        "auth/email-already-in-use": "Looks like you already have an account!",
+                        "auth/invalid-email": "Please enter a valid email address.",
+                        "auth/weak-password": "Your paassword must be at least 6 characters.",
+                        "auth/network-request-failed": "Check your internet connection and try again."
+                    };
+                    if (substitutes[error.code]) {
+                        userMessage = substitutes[error.code];
+                    }  
+
+                    document.getElementById("error-msg").innerText = userMessage;
                     document.getElementById("error-container").classList.remove('d-none');
 
-                    console.log(`Registration failed: [ code: ${error.code}, message: ${error.message} ]`);
+                    console.log(`Registration failed: [ code: ${error.code}, message: ${error.message} ]`); 
+                
+                    if (error.code === "auth/email-already-in-use") {
+                        setTimeout(() => {
+                            window.location.href = '/login';
+                        }, 2000);
+                    }
                 }
             });
         </script>
