@@ -4,6 +4,7 @@ from functools import wraps
 import requests
 
 import hashlib, string, math, passGen
+from zxcvbn import zxcvbn
 
 import os
 
@@ -37,50 +38,31 @@ class Password():
         self.length = len(pword)
         self.hash = self.hash_str()
         self.strength = self.strength()
-
-    def hash_str(self):
-        sha1_hash = hashlib.sha1()
-        sha1_hash.update((self.pw).encode('utf-8'))
-        return sha1_hash.hexdigest()
-    def pwned(self):
-        url = f'https://api.pwnedpasswords.com/range/{self.hash[:5]}'
-        params = {
-            'Add-Padding': True,
+    def strength(password):
+        if pawned(hash_string(password)):
+            return 0
+        return (zxcvbn(password)['score'] / 4) * 100
+    def hash_string(s):
+        return hashlib.sha1(s.encode('utf-8')).hexdigest()
+    def pawned(hash):
+        url = f"https://api.pwnedpasswords.com/range/{hash[:5]}"
+        headers = {
+            'Add-Padding': 'true',
         }
-
+    
         try:
-            response = requests.get(url, params=params)
+            response = requests.get(url, headers=headers)
             response.raise_for_status()
             data = response.text.splitlines()
-            suffix = self.hash[5:].upper()
-
+            suffix = hash[5:].upper()
+    
             for line in data:
-                api_suffix = line.split(':')[0]
-                if api_suffix == suffix: return True
+                if line.split(':')[0] == suffix:
+                    return True
             return False
         except requests.exceptions.RequestException as e:
-            print(f"error: {e}")
-            return e
-
-    def strength(self):
-        size = 0
-        lower = string.ascii_lowercase
-        upper = string.ascii_uppercase
-        punctuation = string.punctuation
-        digits = string.digits
-        if any(char in lower for char in self.pw): size += len(lower)
-        if any(char in upper for char in self.pw): size += len(upper)
-        if any(char in digits for char in self.pw): size += len(digits)
-        if any(char in punctuation for char in self.pw): size += len(punctuation)
-
-        strength = (math.log2(size ** len(self.pw)))
-        if self.pwned(): strength = strength - 50.0
-
-        R = 94
-        L = 20
-        BENCHMARK = (math.log2(R ** L))
-        percentage = int((strength / BENCHMARK) * 100)
-        return min(100, max(0, percentage))
+            print(e)
+            return False
 
 # Homepage
 @app.route("/")
