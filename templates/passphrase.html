@@ -6,34 +6,29 @@
     <script>
         async function get(phrase) {
             const data = await fetch("/passphrase-generator", {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'phrase': phrase })
+                method: "GET",
+                headers: { 'Content-Type': 'application/json' }
             });
 
-            if (data.ok === false) { console.log("App error."); }
+            if (!data.ok) console.log("App error.");                                                                                                                                                                                                        if (data.ok === false) console.log("App error.");
             response = await data.json();
-            if (response["pw"] === -1) { console.log("App error."); }
-            return response["pw"];
+            if (response["pw"] === -1 || response["mnemonic"] === -1) console.log("App error.");
+            return response;
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
             document.querySelector("#generate").addEventListener("click", async function() {
-                console.log("yay");
-                let input = document.querySelector("#phrase");
-                const result = document.querySelector("#result");
-                if (input.value.replaceAll(" ", "") === "") {
-                    result.textContent = "Invalid Input.";
-                } else {
-                    input = input.value;
-                    result.textContent = await get(input);
+                let results = get();
+                let pw = document.querySelector("#pw");
+                pw.textContent = results["pw"];
+                document.querySelector("#mnemonic").textContent = results["mnemonic"];
 
-                    const btn = document.querySelector("#copy");
-                    btn.addEventListener("click", () => {
-                        btn.textContent = "Copied!";
-                        navigator.clipboard.writeText(result.textContent);
-                    });
-                }
+                let btn = document.querySelector("#copy");
+                btn.addEventListener('click', () => {
+                    console.log('Copied!');
+                    btn.textContent = "Copied!";
+                    await navigate.clipboard.writeText(pw);
+                });
             });
         });
     </script>
@@ -148,10 +143,11 @@
         }
     </style>
     <div class="form">
-        <input type="text" placeholder="Passphrase" autocomplete="off" autofocus required name="passphrase" id="phrase">
-        <label for="phrase">Passphrase</label>
         <button type="button" id="generate">Generate</button>
-        <button type="button" id="copy">Copy</button>
-        <button type="button" id="result"></button>
+        <button type="button" id="copy">Copy Password</button>
+        <div id="results">
+            <input type="password" id="pw" readonly>
+            <input type="password" id="mnemonic" readonly>
+        </div>
     </div>
 {% endblock %}
