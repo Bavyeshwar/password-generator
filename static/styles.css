@@ -1,26 +1,18 @@
 * {
     margin: 0;
     padding: 0;
+    flex-shrink: 0 !important;
+}
+:root {
+    --nav-height: clamp(3rem, 5rem, 10rem);
+    --ham-right: clamp(0.6rem, 1.3rem, 3rem)
 }
 
 input {
-    height: 10vh;
-    width: 20vw;
-    border-radius: 34px;
-    text-indent: 30px;
-}
-
-#email {
-    margin-top: 50px;
-}
-
-#password {
-    margin-top: 70px;
-}
-
-input::placeholder {
-    font-size: 20px;
-    text-align: center;
+    height: 5rem;
+    width: 15rem;
+    border-radius: 1.2rem;
+    text-indent: 1rem;
 }
 
 form {
@@ -37,22 +29,25 @@ body {
 
 nav {
     box-shadow: 6px 8px 20px rgba(0, 0, 0, 0.5);
+    height: var(--nav-height);
+    width: 100%;
+    display: flex;
+    justify-content: space-between !important;
+    background-color: black;
+    padding-inline: 0.4rem;
+    margin-bottom: -1px;
+}
+.slide {
+    scroll-margin-top: var(--nav-height) !important;
 }
 
 .my-nav-link:hover {
     text-decoration: underline !important;
 }
 
-nav {
-    min-height: 9vh;
-    min-width: 100vw;
-}
-
 .my-nav-link {
-    font-size: 1.4rem !important;
+    font-size: 1.5rem !important;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
-    margin: none;
-    padding: none;
 }
 
 main {
@@ -71,26 +66,19 @@ body::~webkit~scrollbar {
     pointer-events: none;
 }
 
-#homeIcon {
-    position: relative;
-}
-
 .my-site-name {
-    position: absolute;
-    left: 7vw;
-    font-size: 1.5rem !important;
+    font-size: 2rem !important;
     font-family: "Chalkduster", "Luminari", fantasy;
 }
 
 #homeButton {
-    position: absolute;
     pointer-events: all;
     user-select: none;
     height: 10vh;
     width: 5vw;
     border: none;
     background: none;
-    top: 0
+    top: 0;
 }
 
 #homeButton:hover {
@@ -100,16 +88,10 @@ body::~webkit~scrollbar {
 .icon {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
     pointer-events: none;
-    height: 50%;
-    width: 50%;
+    height: clamp(1rem, 3rem, 6rem);
+    width: clamp(1rem, 3rem, 6rem);
 }
 
-.myNavbar {
-    display: flex;
-    gap: 0;
-    position: absolute;
-    right: 30px;
-}
 .link4 {
     color: gold !important;
 }
@@ -123,4 +105,82 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
     -webkit-text-fill-color: white !important;
     -webkit-box-shadow: 0 0 0px 1000px #000 inset !important;
+}
+#navbar-site-title {
+    display: flex;
+    justify-content: space-between !important;
+    padding: none;
+    margin: none;
+    align-items: center;
+    gap: clamp(10px, 2rem, 3rem);
+    width: clamp(5rem, 40vw, 10rem);
+}
+
+.text-white {
+    color: white;
+}
+#side-menu {
+    display: none;
+}
+#side-menu.active {
+    background-color: black;
+    height: clamp(3.2rem, 15rem, 30rem);
+    width: clamp(2rem, 30vw, 8rem);
+    position: fixed;
+    right: var(--ham-right);
+    top: var(--nav-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: clamp(0.5rem, 1rem, 3rem);
+    transition: 0.5s ease;
+    z-index: 20;
+    margin: 0; padding: 0;
+}
+.registration-links {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: space-evenly;
+}
+.ham-menu {
+    height: clamp(1rem, 5rem, 7rem);
+    width: clamp(1rem, 5rem, 7rem);
+    margin-right: var(--ham-right) !important;
+}
+.ham-menu span {
+    margin-top: 0;
+    height: 0.5rem;
+    width: 3.5rem;
+    background-color: white;
+    border-radius: 30px;
+    position: absolute;
+    display: flex;
+}
+.ham-menu span:nth-child(1) {
+    top: clamp(0.3rem, 1rem, 1.5rem);
+}
+.ham-menu span:nth-child(2) {
+    top: clamp(0.7rem, 3.4rem, 4rem);
+}
+.ham-menu span:nth-child(3) {
+    top: clamp(0.5rem, 2.2rem, 3rem);
+}
+.ham-menu.active span {
+    border-radius: 0;
+}
+.ham-menu.active span:nth-child(1) {
+    transform: translateY(250%) rotate(45deg);
+}
+.ham-menu.active span:nth-child(2) {
+    display: none;
+}
+.ham-menu.active span:nth-child(3) {
+    transform: translateX(2%) rotate(-45deg);
+}
+
+ul {
+    list-style-type: none;
 }

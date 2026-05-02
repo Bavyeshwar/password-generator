@@ -27,9 +27,22 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('wheel', (event) => {
     event.preventDefault();
 }, { passive: false });
+document.addEventListener('scroll', (event) => {
+    event.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+}, { passive: false });
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#homeButton').addEventListener('click', () => {
         window.location.href = '/';
+    });
+
+    const hamMenu = document.querySelector('.ham-menu');
+    const sideMenu = document.querySelector("#side-menu")
+    hamMenu.addEventListener("click", () => {
+        hamMenu.classList.toggle('active');
+        sideMenu.classList.toggle('active');
     });
 });

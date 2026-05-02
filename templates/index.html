@@ -53,15 +53,19 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            gsap.registerPlugin(ScrollToPlugin);
-            const main = document.querySelector('main');
-            const tl = gsap.timeline({defaults: {ease: "power1.inOut", duration: 2}});
+            function animate() {
+                gsap.registerPlugin(ScrollToPlugin);
+                const main = document.querySelector('main');
+                const tl = gsap.timeline({defaults: {ease: "power1.inOut", duration: 2}});
 
-            gsap.to(main, { duration: 0, scrollTo: "#first" });
+                gsap.to(main, { duration: 0, scrollTo: "#first" });
 
-            tl.to(main, { scrollTo: "#second" });
-            tl.to(main, { scrollTo: "#fourth" });
-            tl.to(main, { scrollTo: "#third" });
+                tl.to(main, { scrollTo: "#second", zIndex: 10 });
+                tl.to(main, { scrollTo: "#fourth", zIndex: 10 });
+                tl.to(main, { scrollTo: "#third", zIndex: 10 });
+            }
+            animate();
+            window.addEventListener("resize", animate);        
         });
     </script>
 

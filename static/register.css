@@ -9,6 +9,14 @@ input {
     user-select: none;
 }
 
+#email {
+    margin-top: 4rem;
+}
+
+#password {
+    margin-top: 1rem;
+}
+
 .register {
     margin-top: 10vh;
     height: 10vh;
