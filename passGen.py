@@ -21,7 +21,10 @@ def generate_mnemonic(length):
          connectors.append(f"{connectors[i] * j}")
    connector = secrets.choice(connectors)
     
-   pw = xp.generate_xkcdpassword(xp.generate_wordlist(xp.locate_wordfile(), min_length=5, max_length=8), numwords=length, delimiter=connector)
+   pw = xp.generate_xkcdpassword(
+       xp.generate_wordlist(xp.locate_wordfile(), 
+       min_length=5, max_length=8), 
+       numwords=length, delimiter=connector)
 
    words = [word for word in pw.split(connector)]
    mnemonic = words[0].capitalize()
