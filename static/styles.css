@@ -1,11 +1,11 @@
 * {
     margin: 0;
     padding: 0;
-    flex-shrink: 0 !important;
+    flex-shrink: 0 !important;  
 }
 :root {
     --nav-height: clamp(3rem, 5rem, 10rem);
-    --ham-right: clamp(0.6rem, 1.3rem, 3rem)
+    --ham-right: clamp(0.6rem, 1.3rem, 3rem);
 }
 
 input {
@@ -35,10 +35,6 @@ nav {
     justify-content: space-between !important;
     background-color: black;
     padding-inline: 0.4rem;
-    margin-bottom: -1px;
-}
-.slide {
-    scroll-margin-top: var(--nav-height) !important;
 }
 
 .my-nav-link:hover {
@@ -52,8 +48,6 @@ nav {
 
 main {
     scrollbar-width: none;
-    height: 100%;
-    width: 100%;
 }
 
 body::~webkit~scrollbar {
@@ -68,7 +62,7 @@ body::~webkit~scrollbar {
 
 .my-site-name {
     font-size: 2rem !important;
-    font-family: "Chalkduster", "Luminari", fantasy;
+    font-family: "Chalkduster", fantasy;
 }
 
 #homeButton {
@@ -88,8 +82,8 @@ body::~webkit~scrollbar {
 .icon {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
     pointer-events: none;
-    height: clamp(1rem, 3rem, 6rem);
-    width: clamp(1rem, 3rem, 6rem);
+    height: clamp(0.4rem, 3rem, 6rem);
+    width: clamp(0.4rem, 3rem, 6rem);
 }
 
 .link4 {

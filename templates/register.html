@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/register.css">
     <link rel="stylesheet" href="/static/eye.css">
     <script src="/static/form.js"></script>
-    <script src="/static/script.js"></script>
+    <script src="/static/script.js" type="module"></script>
     <link href="/static/styles.css" rel="stylesheet">
     <style>
         .email-container, .password-container {
@@ -65,111 +65,113 @@
         }
         #error-msg { color: black; }
     </style>
-
-    <div class="main-content d-flex">
-        <form method="post" action="/register">
-            <div class="email-container">
-                <input name="email" type="text" class="email" required autocomplete="off" autofocus placeholder=" " id="email">
-                <label for="input" class="input-label">Email</label>
-            </div>
-            <div class="password-container">
-                <button class="eyeButtons" type="button" id="eyeButton1">
-                    <span class="eye-container"></span>
-                </button>
-                <input name="password" type="password" class="password" required autocomplete="off" placeholder=" " id="password">
-                <label for="input" class="input-label">Password</label>
-            </div>
-            <div class="password-container">
-                <button class="eyeButtons" id="eyeButton2" type="button">
-                    <span class="eye-container"></span>
-                </button>
-                <input name="confirmation" type="password" class="password" required autocomplete="off" placeholder=" " id="passwordConfirmation">
-                <label for="input" class="input-label">Confirm Password</label>
-            </div>
-
-            <button type="submit" required class="register" id="registerButton">Register</button>
-        </form>
-        <div id="error-container" class="alert alert-danger d-none" role="alert">
-            <span id="error-msg"></span>
+    <form method="post" action="/register">
+        <div class="email-container">
+            <input name="email" type="text" class="email" required autocomplete="off" autofocus placeholder=" " id="email">
+            <label for="input" class="input-label">Email</label>
         </div>
-        <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-            import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-            const firebaseConfig = {
-                apiKey: "AIzaSyCUnrHCSR--zlWKLVGyzHSrO3anjSnpuww",
-                authDomain: "pw-generator-site.firebaseapp.com",
-                projectId: "pw-generator-site",
-                storageBucket: "pw-generator-site.firebasestorage.app",
-                messagingSenderId: "784808416311",
-                appId: "1:784808416311:web:04fa57018d6ecc24b75bb2"
-            };
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
+        <div class="password-container">
+            <button class="eyeButtons" type="button" id="eyeButton1">
+                <span class="eye-container"></span>
+            </button>
+            <input name="password" type="password" class="password" required autocomplete="off" placeholder=" " id="password">
+            <label for="input" class="input-label">Password</label>
+        </div>
+        <div class="password-container">
+            <button class="eyeButtons" id="eyeButton2" type="button">
+                <span class="eye-container"></span>
+            </button>
+            <input name="confirmation" type="password" class="password" required autocomplete="off" placeholder=" " id="passwordConfirmation">
+            <label for="input" class="input-label">Confirm Password</label>
+        </div>
 
-            document.querySelector("#registerButton").addEventListener("click", async (event) => {
-                event.preventDefault();
-
-                const email = document.getElementById("email").value;
-                const pw = document.querySelector("#password").value;
-                const confirmed = document.getElementById("passwordConfirmation").value;
-
-                const errorDiv = document.querySelector("#error-msg");
-                const errorContainer = document.getElementById("error-container");
-
-                if (pw != confirmed) {
-                    errorDiv.content = "Password and Confirmation don't match";
-                    errorContainer.classList.remove("d-none");
-                }
-
-                try {
-                    const credentials = await createUserWithEmailAndPassword(auth, email, pw);
-
-                    const token = await credentials.user.getIdToken();
-                    
-                    const response = await fetch('/create-session', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ token: token })
-                    });
-
-                    if (response.ok) {
-                        window.location.href = '/';
-                    }
-
-                } catch(error) {
-                    let userMessage = "Something went wrong. Please try again.";
-                    const substitutes = {
-                        "auth/email-already-in-use": "Looks like you already have an account!",
-                        "auth/invalid-email": "Please enter a valid email address.",
-                        "auth/weak-password": "Your paassword must be at least 6 characters.",
-                        "auth/network-request-failed": "Check your internet connection and try again."
-                    };
-                    if (substitutes[error.code]) {
-                        userMessage = substitutes[error.code];
-                    }  
-
-                    document.getElementById("error-msg").innerText = userMessage;
-                    document.getElementById("error-container").classList.remove('d-none');
-
-                    console.log(`Registration failed: [ code: ${error.code}, message: ${error.message} ]`); 
-                
-                    if (error.code === "auth/email-already-in-use") {
-                        setTimeout(() => {
-                            window.location.href = '/login';
-                        }, 2000);
-                    }
-                }
-            });
-        </script>
-        <svg viewBox="0 0 1920 1080" class="arrows">
-            <g class="arrow2">
-                <path class="path2" d="M 700 650 Q 50 700 420 400 Q 520 500 270 600 T 200 210"></path>
-                <polygon class="arrow-head2" points="700 700, 800 650, 700 600"></polygon>
-            </g>
-            <g class="arrow1">
-                <polygon class="arrow-head" points="700 700, 800 650, 700 600"></polygon>
-                <path class="path1" d="M 700 650 Q 50 700 420 400 Q 520 500 270 600 T 200 210"></path>
-            </g>
-        </svg>
+        <button type="submit" required class="register" id="registerButton">Register</button>
+    </form>
+    <div id="error-container" class="alert alert-danger d-none" role="alert">
+        <span id="error-msg"></span>
     </div>
+    <script type="module">
+        import { prevent } from '../static/script.js';
+        const confirmation = document.getElementById("passwordConfirmation");
+        prevent(confirmation);
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUnrHCSR--zlWKLVGyzHSrO3anjSnpuww",
+            authDomain: "pw-generator-site.firebaseapp.com",
+            projectId: "pw-generator-site",
+            storageBucket: "pw-generator-site.firebasestorage.app",
+            messagingSenderId: "784808416311",
+            appId: "1:784808416311:web:04fa57018d6ecc24b75bb2"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.querySelector("#registerButton").addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const pw = document.querySelector("#password").value;
+            print(confirmation.value);
+            const confirmed = confirmation.value;
+
+            const errorDiv = document.querySelector("#error-msg");
+            const errorContainer = document.getElementById("error-container");
+
+            if (pw != confirmed) {
+                errorDiv.content = "Password and Confirmation don't match";
+                errorContainer.classList.remove("d-none");
+            }
+
+            try {
+                const credentials = await createUserWithEmailAndPassword(auth, email, pw);
+
+                const token = await credentials.user.getIdToken();
+                
+                const response = await fetch('/create-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    window.location.href = '/';
+                }
+
+            } catch(error) {
+                let userMessage = "Something went wrong. Please try again.";
+                const substitutes = {
+                    "auth/email-already-in-use": "Looks like you already have an account!",
+                    "auth/invalid-email": "Please enter a valid email address.",
+                    "auth/weak-password": "Your paassword must be at least 6 characters.",
+                    "auth/network-request-failed": "Check your internet connection and try again."
+                };
+                if (substitutes[error.code]) {
+                    userMessage = substitutes[error.code];
+                }  
+
+                document.getElementById("error-msg").innerText = userMessage;
+                document.getElementById("error-container").classList.remove('d-none');
+
+                console.log(`Registration failed: [ code: ${error.code}, message: ${error.message} ]`); 
+            
+                if (error.code === "auth/email-already-in-use") {
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                }
+            }
+        });
+    </script>
+    <svg viewBox="0 0 1920 1080" class="arrows">
+        <g class="arrow2">
+            <path class="path2" d="M 700 650 Q 50 700 420 400 Q 520 500 270 600 T 200 210"></path>
+            <polygon class="arrow-head2" points="700 700, 800 650, 700 600"></polygon>
+        </g>
+        <g class="arrow1">
+            <polygon class="arrow-head" points="700 700, 800 650, 700 600"></polygon>
+            <path class="path1" d="M 700 650 Q 50 700 420 400 Q 520 500 270 600 T 200 210"></path>
+        </g>
+    </svg>
 {% endblock %}

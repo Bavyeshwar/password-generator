@@ -1,24 +1,33 @@
+main, body {
+    overflow: hidden;
+}
+form {
+    z-index: 1;
+}
 input {
     background-color: #000000;
     border: 2px solid #000000;
     color: green;
-    height: 10vh;
-    width: 20vw;
+    height: clamp(2rem, 4rem, 7rem);
+    width: clamp(4rem, 10em, 20rem);
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
-    font-size: 20px;
+    font-size: clamp(10px, 20px, 30px);
     user-select: none;
 }
 
-#email {
-    margin-top: 4rem;
+.email-container {
+    margin-top: 0;
+    padding: 0;
 }
 
-#password {
-    margin-top: 1rem;
+.password-container {
+    margin-top: 0;
+    padding: 0;
 }
 
 .register {
-    margin-top: 10vh;
+    margin-top: 0;
+    padding: 0;
     height: 10vh;
     width: 20vw;
     background-color: #000000;
@@ -53,17 +62,15 @@ input::placeholder {
     color: green;
 }
 
-form {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 40vw;
-    z-index: 1;
-}
-
-body {
+main {
     background-size: 400% 400%;
     background-color: #222222;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: column !important;
+    align-content: center !important;
+    width: 100vw; height: 100vh;
 }
 
 .arrow-head {

@@ -1,8 +1,3 @@
-function prevent(event) {
-    event.preventDefault();
-}
-document.addEventListener('cut', prevent);
-
 document.addEventListener('DOMContentLoaded', () => {
     const array = Array.from(document.querySelectorAll('.eyeButtons'));
     for (let i = 0; i < array.length; i++) {

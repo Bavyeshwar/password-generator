@@ -1,3 +1,15 @@
+export function prevent(element = null) {
+    if (element != null) {
+        document.addEventListener('cut', (event) => {
+            event.preventDefault();
+        });
+    } else {
+        element.addEventListener('cut', (event) => {
+            event.preventDefault();
+        });
+    }
+}
+
 document.addEventListener('keydown', (event) => {
     const element = event.target.tagName.toLowerCase();
     if (element === "input" || event.target.isContentEditable) {

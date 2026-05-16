@@ -12,9 +12,9 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            const third = document.querySelector("#third");
-            third.addEventListener("click", (event) => {
-                const rect = third.getBoundingClientRect();
+            const main = document.querySelector("main");
+            main.addEventListener("click", (event) => {
+                const rect = main.getBoundingClientRect();
                 const clickX = event.clientX - rect.left;
                 const clickY = event.clientY - rect.top;
 
@@ -26,7 +26,7 @@
                     confetti.style.top = `${clickY - 4}px`;
                     confetti.style.left = `${clickX - 4}px`;
                     pieces.push(confetti);
-                    third.appendChild(confetti);
+                    main.appendChild(confetti);
                 }
 
                 pieces.forEach((piece) => {
@@ -51,34 +51,12 @@
                 }, 1500);
             });
         });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            function animate() {
-                gsap.registerPlugin(ScrollToPlugin);
-                const main = document.querySelector('main');
-                const tl = gsap.timeline({defaults: {ease: "power1.inOut", duration: 2}});
-
-                gsap.to(main, { duration: 0, scrollTo: "#first" });
-
-                tl.to(main, { scrollTo: "#second", zIndex: 10 });
-                tl.to(main, { scrollTo: "#fourth", zIndex: 10 });
-                tl.to(main, { scrollTo: "#third", zIndex: 10 });
-            }
-            animate();
-            window.addEventListener("resize", animate);        
-        });
     </script>
-
-    <div class="slide" id="first"></div>
-    <div class="slide" id="second"></div>
-    <div class="slide" id="third">
-        <div class="txt">
-            <h3>Welcome To CyberSecurity!</h3>
-            <p>
-                blah blah blah
-                PS Click anywhere on the screen!
-            </p>
-        </div>
+    <div class="txt">
+        <h3>Welcome To CyberSecurity!</h3>
+        <p>
+            blah blah blah
+            PS Click anywhere on the screen!
+        </p>
     </div>
-    <div class="slide" id="fourth"></div>
 {% endblock %}
